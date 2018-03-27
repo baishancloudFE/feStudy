@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>第一个 HTML 文档</title>
+  <link rel="stylesheet" href="./01-css.css" />
+</head>
+<body>
+  <h1 id="title"> HTML Study </h1>
+  <p> 第一个 HTML 文档 </p>
+  <img src="https://www.baishancloud.com/zh/public/image/logo_black_cn.png" width="60"/>
+  <ul>
+    <li><a href="./01-html.html">泉宁</a></li>
+    <li>俊雄</li>
+    <li>胡硕</li>
+  </ul>
+  <ol>
+    <li>泉宁</li>
+    <li>俊雄</li>
+    <li>胡硕</li>
+  </ol>
+  <dl>
+    <dt>Coffee</dt>
+    <dd>Black hot drink</dd>
+    <dt>Milk</dt>
+    <dd>White cold drink</dd>
+  </dl>
+  <table>
+    <tr>
+      <th>月份</th>
+      <th>价格</th>
+      <th>人名</th>
+    </tr>
+    <tr>
+      <td>January</td>
+      <td>$100</td>
+      <td>sadfa</td>
+    </tr>
+    <tr>
+      <td>January1</td>
+      <td>$1002</td>
+      <td>sadfa</td>
+    </tr>
+  </table>
+  <script>
+  let obj = {
+name: 'string 字符串',
+home: {
+  province: '山东'
+}
+};
+
+obj.age = 18;
+
+console.log(obj.home.province);
+let key = 'age';
+console.log(obj[key], obj['age']);
+delete obj.name;
+
+let bb = {
+  age: 18,
+  sex: 'male',
+  name: '后面的同 key 内容会覆盖前面的'
+};
+let aa = {
+  name: '宇韬',
+  ...bb,
+};
+  </script>
+</body>
+</html>
