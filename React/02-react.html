@@ -1,0 +1,113 @@
+<html>
+<head>
+    <script src="./js/react16.0.0.production.min.js"></script>
+    <script src="./js/react-dom16.0.0.production.min.js"></script>
+    <script src="./js/browser.min.js"></script>
+    <script src="./js/BizCharts.min.js"> </script>
+    <link rel="stylesheet" href="./css/01-css.css" />
+
+  </head>
+  <body>
+      <div id="mountNode"></div>
+<script type="text/babel">
+
+  // class Header extends React.Component {
+  //   render() {
+
+  //     return (
+  //       <header> 
+  //         Hello Header
+  //       </header>
+  //     );
+  //   }
+  // }
+
+  // class Footer extends React.Component {
+  //   render() {
+
+  //     return (
+  //       <header> 
+  //         Hello Footer
+  //       </header>
+  //     );
+  //   }
+  // }
+
+  class Module extends React.Component {
+    render() {
+
+      return (
+        <header> 
+          Hello {this.props.title}
+        </header>
+      );
+    }
+  }
+
+
+
+  // class Left extends React.Component {
+  //   render() {
+
+  //     return (
+  //       <div class="left">Hello Left Side</div>
+  //     );
+  //   }
+  // }
+
+  //  class Right extends React.Component {
+  //   render() {
+
+  //     return (
+  //       <div class="right">Hello Right Side</div>
+  //     );
+  //   }
+  // }
+
+  class Sider extends React.Component {
+    render() {
+
+      return (
+        <div class={this.props.cls}>Hello {this.props.title} Side</div>
+      );
+    }
+  }
+
+  class Section extends React.Component {
+    render() {
+
+      return (
+        <section>
+         <Sider title="Left" cls="left"/>
+         <Sider title="Right" cls="right"/>
+        </section>
+      )
+    }
+  }
+
+  
+
+  class App extends React.Component {
+    render() {
+
+      return (
+        <div>
+          <Module  title="Header"/>
+          <Section />
+          <Module  title="Footer"/>
+        </div>
+      );
+    }
+  }
+
+  // ========================================
+
+  ReactDOM.render(
+    <App />,
+    document.getElementById('mountNode')
+  );
+
+</script>
+
+</body>
+</html>

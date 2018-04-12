@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+  <style>body { margin: 0; }</style>
+  <script src="//g.alicdn.com/bizcharts/io-asserts/3.1.2/react16.0.0.production.min.js"></script>
+  <script src="//g.alicdn.com/bizcharts/io-asserts/3.1.2/react-dom16.0.0.production.min.js"></script>
+  <script src="//cdn.bootcss.com/babel-core/5.8.38/browser.min.js"></script>
+  <script src="//g.alicdn.com/bizcharts/io-asserts/3.1.2/BizCharts.min.js"> </script>
+</head>
+<body>
+<div id="container" style="width:40%; float:left;"></div>
+<div id="mountNode" style="width:50%; float:left; padding: 30px;"></div>
+<div id="cont"></div>
+<script src="https://cdn.bootcss.com/monaco-editor/0.10.1/min/vs/loader.js"></script>
+<script>
+  var cdn = 'https://cdn.bootcss.com/monaco-editor/0.10.1/min/vs';
+  var container = document.getElementById('container');
+  container.style.height = document.documentElement.clientHeight + 'px';
+	require.config({ paths: { vs: cdn }});
+	require(['vs/editor/editor.main'], function() {
+		var editor = window.editor = monaco.editor.create(container, {
+			value: "class HelloMessage extends React.Component {\n  render() {\n    return (\n      <div>Hello world!</div>\n     );\n  }\n}\n\nReactDOM.render(\n  <HelloMessage />,\n  document.getElementById('mountNode')\n);",
+			language: 'javascript',
+			theme: 'vs-dark',
+			options: {
+        selectOnLineNumbers: true,
+        automaticLayout: true,
+      },
+		});
+		// editor.trigger('', 'editor.action.triggerSuggest', {});
+    editor.focus();
+    run(editor.getValue())
+		editor.model.onDidChangeContent(function(event) {
+      run(editor.getValue())
+    });
+  });
+  
+  function run(value) {
+    var html = '<script type="text/babel">' + value + '<\/script>';
+    var cont = document.getElementById('cont');
+    cont.innerHTML = html;
+    var oldScript = cont.getElementsByTagName('script')[0];
+    cont.removeChild(oldScript);
+    var newScript = document.createElement('script');
+    newScript.type = 'text/babel';
+    newScript.innerHTML = oldScript.innerHTML;
+    cont.appendChild(newScript);
+  }
+
+	window.onresize = function(e) {
+    window.editor && window.editor.layout();
+  };
+</script>
+</body>
+</html>

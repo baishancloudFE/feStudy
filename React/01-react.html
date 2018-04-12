@@ -1,0 +1,87 @@
+<html>
+<head>
+    <script src="./js/react16.0.0.production.min.js"></script>
+    <script src="./js/react-dom16.0.0.production.min.js"></script>
+    <script src="./js/browser.min.js"></script>
+    <script src="./js/BizCharts.min.js"> </script>
+    <link rel="stylesheet" href="./css/01-css.css" />
+
+  </head>
+  <body>
+      <div id="mountNode"></div>
+<script type="text/babel">
+
+  class Header extends React.Component {
+    render() {
+
+      return (
+        <header> 
+          Hello Header
+        </header>
+      );
+    }
+  }
+
+  class Left extends React.Component {
+    render() {
+
+      return (
+        <div class="left">Hello Left Side</div>
+      );
+    }
+  }
+
+
+  function Right() {
+    return (
+        <div class="right">Hello Right Side</div>
+      );
+  }
+
+  class Section extends React.Component {
+    render() {
+
+      return (
+        <section>
+         <Left />
+         <Right />
+        </section>
+      )
+    }
+  }
+
+  class Footer extends React.Component {
+    render() {
+
+      return (
+        <header> 
+          Hello Footer
+        </header>
+      );
+    }
+  }
+
+  class App extends React.Component {
+    render() {
+
+      return (
+        <div>
+          <Header />
+          <Section />
+          <Footer />
+        </div>
+      );
+    }
+  }
+
+  // ========================================
+
+  ReactDOM.render(
+    <App />,
+    document.getElementById('mountNode')
+  );
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<html>
+<head>
+    <script src="./js/react16.0.0.production.min.js"></script>
+    <script src="./js/react-dom16.0.0.production.min.js"></script>
+    <script src="./js/browser.min.js"></script>
+    <script src="./js/BizCharts.min.js"> </script>
+    <link rel="stylesheet" href="./css/01-css.css" />
+
+  </head>
+  <body>
+      <div id="mountNode"></div>
+<script type="text/babel">
+
+  class Clock extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {date: new Date()};
+    }
+
+    render() {
+      return (
+        <div>
+          <h1>Hello, {this.props.name}!</h1>
+          <h2>It is {this.state.date.toLocaleTimeString()}</h2>
+        </div>
+      );
+    }
+  }
+
+  // ========================================
+
+  ReactDOM.render(
+    <Clock name="泉宁"/>,
+    document.getElementById('mountNode')
+  );
+
+</script>
+
+</body>
+</html>
