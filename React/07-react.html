@@ -14,7 +14,7 @@ const childList = []
 
 
 class Child extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.tell && this.props.tell(this.props.name)
   }
 
@@ -37,24 +37,24 @@ class Parent extends React.Component {
   }
 
   getChildren(name) {
-    console.log(this.state.list, 'list')
-    childList.push(name)
-    console.log(childList, 'childList')
-    // this.setState({
-      
-    // });
+    const { list } = this.state 
+    list.push(name)
+    this.setState({
+      list
+    })
   }
 
   render() {
     const { list } =  this.state 
-    const ItemList = list.map(child => <span>一个{child}</span>)
+    console.log('list', list)
+    const ItemList = list.map(child => <h2>一个{child}</h2>)
 
     return (
       <div>
         <h1>我是：{this.props.name}，我有两个孩子</h1>
         <p>{ItemList}</p>
-        <Child name="儿子" tell={this.getChildren}/>
-        <Child name="女儿" tell={this.getChildren}/>
+        <Child name="儿子" tell={this.getChildren.bind(this)}/>
+        <Child name="女儿" tell={this.getChildren.bind(this)}/>
       </div>
     );
   }

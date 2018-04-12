@@ -5,84 +5,176 @@
     <script src="./js/browser.min.js"></script>
     <script src="./js/BizCharts.min.js"> </script>
     <link rel="stylesheet" href="./css/01-css.css" />
-
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
       <div id="mountNode"></div>
 <script type="text/babel">
 
-class Person extends React.Component {
+class ProductCategoryRow extends React.Component {
+  render() {
+    return (<tr><th colSpan="2">{this.props.category}</th></tr>);
+  }
+}
 
-  // 出生（开始渲染，准备初始数据，调用 render 方法）
+class ProductRow extends React.Component {
+  render() {
+    var name = this.props.product.stocked ?
+      this.props.product.name :
+      <span style={{color: 'red'}}>
+        {this.props.product.name}
+      </span>;
+    return (
+      <tr>
+        <td>{name}</td>
+        <td>{this.props.product.price}</td>
+      </tr>
+    );
+  }
+}
+
+class ProductTable extends React.Component {
+  render() {
+    var rows = [];
+    var lastCategory = null;
+    console.log(this.props.inStockOnly)
+    this.props.products.forEach((product) => {
+      if (product.name.indexOf(this.props.filterText) === -1 || (!product.stocked && this.props.inStockOnly)) {
+        return;
+      }
+      if (product.category !== lastCategory) {
+        rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
+      }
+      rows.push(<ProductRow product={product} key={product.name} />);
+      lastCategory = product.category;
+    });
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </table>
+    );
+  }
+}
+
+class SearchBar extends React.Component {
   constructor(props) {
     super(props);
+    this.handleFilterTextInputChange = this.handleFilterTextInputChange.bind(this);
+    this.handleInStockInputChange = this.handleInStockInputChange.bind(this);
+  }
+  
+  handleFilterTextInputChange(e) {
+    this.props.onFilterTextInput(e.target.value);
+  }
+  
+  handleInStockInputChange(e) {
+    this.props.onInStockInput(e.target.checked);
+  }
+  
+  render() {
+    return (
+      <form>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={this.props.filterText}
+          onChange={this.handleFilterTextInputChange}
+        />
+        <p>
+          <input
+            type="checkbox"
+            checked={this.props.inStockOnly}
+            onChange={this.handleInStockInputChange}
+          />
+          {' '}
+          Only show products in stock
+        </p>
+      </form>
+    );
+  }
+}
 
-    console.log('name', this.props.name);
-
+class FilterableProductTable extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      name: this.props.name,
-      age: 0
+      filterText: '',
+      list: [],
+      inStockOnly: false
     };
 
-    // 时间开始转动，5 秒等于 1 岁
-    this.timer = setInterval(() => {
-      this.setState({
-        age: this.state.age + 1
-      });
-    }, 5000);
 
-    console.log('我正在出生');
+    
+    this.handleFilterTextInput = this.handleFilterTextInput.bind(this);
+    this.handleInStockInput = this.handleInStockInput.bind(this);
   }
 
-  // 即将出生（刚开始调用）
   componentWillMount() {
-    console.log('我要出生了，我的名字叫 ', this.props.name);
-  }
-
-  // 出生完毕（调用 render 完成并渲染到页面上）
-  componentDidMount() {
-    console.log('我已经出生');
-  }
-
-  // 接收了新的属性
-  componentWillReceiveProps(nextProps) {
-    // 换了个新名字，固定的属性
-    if (nextProps.name !== this.state.name) {
-      console.log('我换了个名字：', nextProps.name);
+    axios.get('./data/product.json')
+    .then(function (response) {
+      console.log(response.data)
       this.setState({
-        name: nextProps.name
-      });
-    }
+        list: response.data
+      })
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
-  // 要重新渲染了（准备过生日）
-  componentWillUpdate() {
-    console.log('我要改变了！');
+  handleFilterTextInput(filterText) {
+    this.setState({
+      filterText: filterText
+    });
   }
-  // 更新渲染完成了（过完生日）
-  componentDidUpdate() {
-    console.log('我改变完了！');
-  }
-
-  // 要火化了（组件销毁）
-  componentWillUnmount() {
-    // 停止时间
-    console.log('再见啦！');
-    clearInterval(this.timer);
+  
+  handleInStockInput(inStockOnly) {
+    this.setState({
+      inStockOnly: inStockOnly
+    })
   }
 
   render() {
-    console.log('我正在改变！');
+    const { list } = this.state 
+    console.log(list, 'list')
     return (
       <div>
-        <h1>姓名：{this.state.name}，年龄：{this.state.age}</h1>
+        <SearchBar
+          filterText={this.state.filterText}
+          inStockOnly={this.state.inStockOnly}
+          onFilterTextInput={this.handleFilterTextInput}
+          onInStockInput={this.handleInStockInput}
+        />
+        <ProductTable
+          products={this.props.products}
+          filterText={this.state.filterText}
+          inStockOnly={this.state.inStockOnly}
+        />
       </div>
     );
   }
 }
 
+
+var PRODUCTS = [
+  {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
+  {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
+  {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
+  {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
+  {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
+  {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+];
+
+
+
   ReactDOM.render(
-    <Person name="宇韬"/>,
+    <FilterableProductTable products={PRODUCTS} />,
     document.getElementById('mountNode')
   );
 
