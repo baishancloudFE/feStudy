@@ -1,0 +1,53 @@
+<html>
+<head>
+    <script src="./js/react16.0.0.production.min.js"></script>
+    <script src="./js/react-dom16.0.0.production.min.js"></script>
+    <script src="./js/browser.min.js"></script>
+    <script src="./js/BizCharts.min.js"> </script>
+    <link rel="stylesheet" href="./css/01-css.css" />
+
+  </head>
+  <body>
+      <div id="mountNode"></div>
+<script type="text/babel">
+
+function Mailbox(props) {
+  const unreadMessages = props.unreadMessages;
+  const numbers = [1, 2, 3, 4, 5];
+  const listItems = numbers.map((number, index) =>
+    <li key={index}>{number}</li>
+  );
+
+  return (
+    <div>
+      <h1>Hello!</h1>
+      <ul>{listItems}</ul>
+      <Person sex="man" />
+      {unreadMessages.length > 0 &&
+        <h2>
+          You have {unreadMessages.length} unread messages.
+        </h2>
+      }
+    </div>
+  );
+}
+
+function Person(props) {
+  return (
+    <div>
+      {props.sex === 'man' ? '男' : '女'}
+    </div>
+  );
+}
+
+const messages = ['React', 'Re: React', 'Re:Re: React'];
+ReactDOM.render(
+  <Mailbox unreadMessages={messages} />,
+  document.getElementById('mountNode')
+);
+
+
+</script>
+
+</body>
+</html>
