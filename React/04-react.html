@@ -12,12 +12,6 @@
 <script type="text/babel">
 
 class Person extends React.Component {
-
-  // 即将出生（刚开始调用）
-  componentWillMount() {
-    console.log('我要出生了，我的名字叫 ', this.props.name);
-  }
-
   // 出生（开始渲染，准备初始数据，调用 render 方法）
   constructor(props) {
     super(props);
@@ -34,9 +28,14 @@ class Person extends React.Component {
       this.setState({
         age: this.state.age + 1
       });
-    }, 5000);
+    }, 3000);
 
     console.log('我正在出生');
+  }
+
+  // 即将出生（刚开始调用）
+  componentWillMount() {
+    console.log('我要出生了，我的名字叫 ', this.props.name);
   }
 
 
@@ -77,6 +76,7 @@ class Person extends React.Component {
     return (
       <div>
         <h1>姓名：{this.state.name}，年龄：{this.state.age}</h1>
+        <p>信息</p>
       </div>
     );
   }
